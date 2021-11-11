@@ -1,11 +1,7 @@
 import React from 'react';
 
-export default function ChordC(){
+export function ChordC(){
     return (
-        <div className='chordsGroup'> 
-            <h1> Foi! </h1>
-        </div>
+        <h1> Oi </h1>
     );
 }
-
-export default ChordC;
