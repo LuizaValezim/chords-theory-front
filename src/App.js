@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import * as React from 'react';
 import {accessToken, accessChords} from "./Access.js";
 
-import ChordC from "./components/chords/ChordC/index.js"; // Importanto combinações com a nota C (Chord I)
 import "./App.css";
 
 function GetInfo(sufix){
@@ -32,8 +31,9 @@ function GetInfo(sufix){
 function App() {
     var sufix = "nodes?cp=1"; // The following request shows the chords that are most likely to come after I
     var chords = GetInfo(sufix);
+    var probability = chords[0]?.probability;
 
-    // console.log(chords[0]?.probability);
+    console.log(chords[0]?.probability);
 
     const ChordsButton = styled(Button) (({ theme }) => ({
       color: theme.palette.getContrastText("#6096BA"),
@@ -41,6 +41,20 @@ function App() {
       borderRadius: 50,
       padding: 20,
       margin: 5,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
       fontweight: "bold",
       '&:hover': {
         backgroundColor: "#6096BA",
@@ -53,23 +67,52 @@ function App() {
       borderRadius: 50,
       padding: 20,
       margin: 5,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
       fontweight: "bold",
       '&:hover': {
-        backgroundColor: "#68B077",
+        backgroundColor: "#B4D9BC",
       },
     }));
 
     const YesButton = styled(Button) (({ theme }) => ({
-      color: theme.palette.getContrastText("#68B077"),
-      backgroundColor: "#68B077",
-      borderRadius: 50,
-      padding: 20,
-      margin: 5,
+      color: theme.palette.getContrastText("#F24150"),
+      backgroundColor: "#F24150",
+      borderRadius: 10,
+      padding: 15,
+      margin: 12,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
       fontweight: "bold",
       '&:hover': {
-        backgroundColor: "#68B077",
+        backgroundColor: "#FF8C96",
       },
     }));
+
 
     return (
       <div className="main">
@@ -85,8 +128,8 @@ function App() {
               <div className="content">
                 <h2> Bem-vindo/a ao Chords Theory! </h2>
                 <p> Está querendo compor uma música, mas não sabe por onde começar? 
-                    Não se preocupe, vou te ajudar a escolher a melhor combinação de acordes usando teoria musical. Está pronto?</p>
-                <Link to="/Main" style={{ textDecoration: 'none' }}> <YesButton variant="contained">Sim!</YesButton> </Link>
+                    Não se preocupe, vou te ajudar a escolher a melhor combinação de acordes usando teoria musical.</p>
+                <Link to="/Main" style={{ textDecoration: 'none' }}> <YesButton variant="contained">Começar</YesButton> </Link>
               </div>
             </Route>
 
@@ -120,31 +163,43 @@ function App() {
             {/* Chord C */}
             <Route path="/ChordC">
               <div className="content">
-              <div className="chords"> 
+                <div className="chords"> 
                   <h3> Ótima escolha! Agora, selecione o segundo acorde </h3>
                   
-                  <div className="chordsButton1">
+                  
+                  <div className="chordsButton3">
                     <div className="groupByProbability">
-                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">C</ChordsButton> </Link>
-                      <h3> Probabilidade: </h3>
+                      <Link to="/ChordCG" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">G</ChordsButton> </Link>
+                      <h4> 25,2%</h4>
+                      {/* <script>
+                        prefix = prefix + "1";
+                        chords = GetInfo(sufix);
+                        let probability = chords[0].probability;
+                        document.getElementById("probability").innerHTML = probability;
+                      </script>
+                      <h4 id="probability"></h4> */}
                     </div>
                     <div className="groupByProbability">
-                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">D</ChordsButton> </Link>
-                      <h3> Probabilidade: </h3>
-                    </div>
-                    <div className="groupByProbability">
-                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">E</ChordsButton> </Link>
-                      <h3> Probabilidade: </h3>
-                    </div>
-                    <div className="groupByProbability">
-                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">F</ChordsButton> </Link>
-                      <h3> Probabilidade: </h3>
-                    </div>
+                      <Link to="/ChordCF" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">F</ChordsButton> </Link>
+                      <h4> 18,2% </h4>
+                    </div> 
                   </div>
 
-                  <div className="chordsButton2">
+                  <div className="chordsButton4">
                     <div className="groupByProbability">
-                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButtonSelected variant="contained">G</ChordsButtonSelected> </Link>
+                       <Link to="/ChordCAm" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">Am</ChordsButton> </Link>
+                       <h4> 10% </h4>
+                    </div>
+                    <div className="groupByProbability">
+                       <Link to="/ChordCEm" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">Em</ChordsButton> </Link>
+                       <h4> 3,8% </h4>
+                    </div>
+                  </div>
+                  
+
+                  {/* <div className="chordsButton2">
+                    <div className="groupByProbability">
+                      <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">G</ChordsButton> </Link>
                       <h3> Probabilidade: </h3>
                     </div>
                     <div className="groupByProbability">
@@ -155,7 +210,7 @@ function App() {
                       <Link to="/ChordC" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">B</ChordsButton> </Link>
                       <h3> Probabilidade: </h3>
                     </div>
-                  </div>
+                  </div> */}
 
                 </div> 
               </div>

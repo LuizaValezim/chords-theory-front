@@ -37,6 +37,13 @@
   justify-content: center;
 }
 
+.chordsButton3, .chordsButton4{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 h1 {
   font-family: 'Rubik', sans-serif;
   margin: 0.02rem;
@@ -48,19 +55,34 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Poppins', sans-serif;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-family: 'Poppins', sans-serif;
+  margin: 0.6rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
 }
 
 p {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   width: 40rem;
-  font-weight: normal;
+  font-weight: 300;
   margin: 0.2rem;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
 }
 
 .groupByProbability{
+  display: flex;
   flex-direction: row;
   font-weight: 300
 }
