@@ -33,17 +33,32 @@ function App() {
 
     return (
       <div className="main">
-        <div className="title">
-            <h1> Chords </h1>
-            <h1> Theory </h1>
-        </div>
 
-        <div className="content">
-          <h2> Escolha um acorde para começar:</h2>
+          <div className="title">
+              <h1> Chords </h1>
+              <h1> Theory </h1>
+          </div>
+
+          <div className="content">
+            <h2> Escolha um acorde para começar:</h2>
+
+            <div className="chords"> 
+              <div className="chordsButton1">
+                  <ChordsButton variant="contained" href="https://mui.com/pt/components/buttons/#contained-buttons">C</ChordsButton>
+                  <ChordsButton variant="contained" href="#text-buttons">D</ChordsButton>
+                  <ChordsButton variant="contained" href="#text-buttons">E</ChordsButton>
+                  <ChordsButton variant="contained" href="#text-buttons">F</ChordsButton>
+              </div>
+              <div className="chordsButton2">
+                  <ChordsButton variant="contained" href="#text-buttons">G</ChordsButton>
+                  <ChordsButton variant="contained" href="#text-buttons">A</ChordsButton>
+                  <ChordsButton variant="contained" href="#text-buttons">B</ChordsButton>
+              </div>
+            </div> 
               {/* <BrowserRouter>
-                <Route path="/component/chords/ChordC" component={ChordC} />
+                <Route path="/" component={Main} />
               </BrowserRouter> */}
-        </div>
+          </div>
       </div>
   );
 }
