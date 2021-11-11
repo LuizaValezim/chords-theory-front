@@ -29,11 +29,23 @@ function GetInfo(sufix){
 // }
 
 function App() {
-    var sufix = "nodes?cp=1"; // The following request shows the chords that are most likely to come after I
-    var chords = GetInfo(sufix);
-    var probability = chords[0]?.probability;
+    var sufix;
+    var chords;
+    var probability;
+    var finalProb;
+    
 
-    console.log(chords[0]?.probability);
+    sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
+    
+
+    sufix = sufix + '1,5,6,4'
+    chords = GetInfo(sufix);
+    probability = chords[0]?.probability;
+    finalProb = 1 * 0.252 * 0.342 * 0.646;
+    console.log("Probabilidade C-G-Am-F");
+    console.log("Probabilidade final: " + finalProb*100  + "%");
+
+
 
     const ChordsButton = styled(Button) (({ theme }) => ({
       color: theme.palette.getContrastText("#6096BA"),
@@ -171,13 +183,7 @@ function App() {
                     <div className="groupByProbability">
                       <Link to="/ChordCG" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">G</ChordsButton> </Link>
                       <h4> 25,2%</h4>
-                      {/* <script>
-                        prefix = prefix + "1";
-                        chords = GetInfo(sufix);
-                        let probability = chords[0].probability;
-                        document.getElementById("probability").innerHTML = probability;
-                      </script>
-                      <h4 id="probability"></h4> */}
+                      
                     </div>
                     <div className="groupByProbability">
                       <Link to="/ChordCF" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">F</ChordsButton> </Link>
@@ -188,7 +194,7 @@ function App() {
                   <div className="chordsButton4">
                     <div className="groupByProbability">
                        <Link to="/ChordCAm" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">Am</ChordsButton> </Link>
-                       <h4> 10% </h4>
+                       <h4> 10,1% </h4>
                     </div>
                     <div className="groupByProbability">
                        <Link to="/ChordCEm" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained">Em</ChordsButton> </Link>
