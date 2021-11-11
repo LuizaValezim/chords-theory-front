@@ -9,13 +9,12 @@ async function accessToken(){
     });
 }
 
-async function accessChords(activkey){
+async function accessChords(activkey, sufix){
     return await axios
-      .get("https://api.hooktheory.com/v1/trends/nodes",
+      .get("https://api.hooktheory.com/v1/trends/" + sufix,
           {headers: {"Authorization": `Bearer ${activkey}`}})
       .then((response) => {
         var chords = response.data;
-        console.log(chords);
         return chords;
       })
 }
