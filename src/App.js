@@ -1,14 +1,12 @@
-import "./App.css";
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import {accessToken, accessChords} from "./Access.js";
 
-import ChordC from './component/chords/ChordC'; // importanto combinações com a nota C (Chord I)
-
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-
+// import ChordC from './component/chords/ChordC/index.js'; // Importanto combinações com a nota C (Chord I)
+import "./App.css";
 
 function App() {
     const [chords, setChords] = useState([]);
@@ -19,20 +17,6 @@ function App() {
                       accessChords(token)
                           .then((chr) => setChords(chr))
     })}, []);
-
-    const combinationChords = [
-      {
-        id: 1,
-        title: "1a Opção de acordes",
-        content:
-          "Em G A C",
-      },
-      {
-        id: 2,
-        title: "2a Opção de acordes",
-        content: "Em Am C",
-      },
-    ];
 
 
     const ChordsButton = styled(Button) (({ theme }) => ({
@@ -47,8 +31,6 @@ function App() {
       },
     }));
 
-    
-
     return (
       <div className="main">
         <div className="title">
@@ -57,22 +39,13 @@ function App() {
         </div>
 
         <div className="content">
-          <div classname="subtitle">
-            <h2> Escolha um acorde para começar:</h2>
-          </div>
-          
-        <BrowserRouter>
-          <Route path="/component/chords/chord1" component={noticia} />
-          <Route path="/edit/:note_id">
-            <Editar
-              reloadData={loadData}
-            />
-          </Route>
-        </BrowserRouter>
-            
-          </div>
+          <h2> Escolha um acorde para começar:</h2>
+              {/* <BrowserRouter>
+                <Route path="/component/chords/ChordC" component={ChordC} />
+              </BrowserRouter> */}
         </div>
-    );
+      </div>
+  );
 }
 
 export default App;

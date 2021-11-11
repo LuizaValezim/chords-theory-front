@@ -1,36 +1,36 @@
+.main {
+  margin: 0rem;
+  display: flex;
+  flex-direction: row;
+}
+
 .title {
-  width: 45%;
+  width: 40%;
   display: flex;
   flex-direction: column;
-  min-height: 20.1rem;
+  min-height: 44.1rem;
   padding: 0.1rem;
+  align-items: center;
   justify-content: center;
   box-shadow: 0 1rem 10rem rgb(242 65 80 / 20%), 0rem 1rem 3rem rgb(242 65 80 / 70%);
   border-radius: 5px;
   background-color: #F24150;
-  font-family: 'Rubik', sans-serif;
   font-family: 'Work Sans', sans-serif;
+  font-family: 'Rubik', sans-serif;
   color: white;
   font-size: 3.5rem;
+  margin: 0rem;
+}
+
+.content{
+  width: 65%;
+  display: flex;
+  font-family: 'Rubik', sans-serif;
+  align-items: center;
+  justify-content: center;
 }
 
 h1 {
   margin: 0.02rem;
   height: 6rem;
-}
-
-.card-title {
-font-weight: bold;
-line-height: 1.2;
-margin-bottom: 1rem;
-font-size: 1.2rem;
-}
-
-.card-content {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-flex-grow: 1;
-color: #4c4c4c;
 }
