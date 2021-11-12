@@ -37,11 +37,12 @@
   justify-content: center;
 }
 
-.chordsButton3, .chordsButton4{
+.chordsButton3 {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 0.5rem;
 }
 
 h1 {
@@ -54,8 +55,11 @@ h1 {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-family: 'Poppins', sans-serif;
+  color: #F24150;
+  margin: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 h3 {
@@ -72,6 +76,17 @@ h4 {
   margin: 0.5rem;
 }
 
+h5 {
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  background-color: rgb(255, 208, 212);
+  align-items: center;
+  margin-top: 2.5rem;
+  color: rgb(235, 57, 72);
+  padding: 0.4rem 1.5rem;;
+}
+
 p {
   font-family: 'Roboto', sans-serif;
   font-size: 1.2rem;
@@ -85,4 +100,11 @@ p {
   display: flex;
   flex-direction: row;
   font-weight: 300
+}
+
+.textWithChord{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2.5rem;
 }
