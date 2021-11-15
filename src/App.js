@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import {accessToken, accessChords} from "./Access.js";
+import axios from "axios";
 
 import "./App.css";
 
@@ -16,7 +17,6 @@ function GetInfo(sufix){
                           .then((chr) => setChords(chr))
         })}, []);
 
-    console.log(chords);
     return chords;
 }
 
@@ -80,56 +80,66 @@ function GetInfo(sufix){
 //   if (firstChord === "7"){ listB = list; };
 // }
 
+
 var dictC = {
-  first: ["C", "G", "Am", "F", "2,4%"], // 2,4% das músicas do banco de dados possuem essa combinação
-  second: ["C", "G", "F", "C", "1,5%"], // 1,5% das músicas do banco de dados possuem essa combinação
-  third: ["C", "F", "C", "F", "1,2%"], // 1,2% das músicas do banco de dados possuem essa combinação
+  first: ["C", "G", "Am", "F", "2,4%", "1,5,6,4"], // 2,4% das músicas do banco de dados possuem essa combinação
+  second: ["C", "G", "F", "C", "1,5%", "1,5,4,1"], // 1,5% das músicas do banco de dados possuem essa combinação
+  third: ["C", "F", "C", "F", "1,2%", "1,4,1,4"], // 1,2% das músicas do banco de dados possuem essa combinação
 };
 var dictD = {
-  first: ["D", "A", "Bm", "G", "2,4%"],
-  second: ["D", "G", "A", "D", "1,2%"],
-  third: ["D", "Em", "Bm", "G", "0.27%"],
+  first: ["D", "A", "Bm", "G", "2,4%", "2,6,7,5"],
+  second: ["D", "G", "A", "D", "1,2%", "2,5,6,2"],
+  third: ["D", "Em", "Bm", "G", "0.27%", "2,3,7,5"],
 };
 var dictE = {
-  first: ["Em", "F", "G", "Am", "0,74%"],
-  second: ["Em", "Am", "G", "F", "0,31%"],
-  third: ["E", "Am", "F", "C", "0.19%"],
+  first: ["Em", "F", "G", "Am", "0,74%", "3,4,5,6"],
+  second: ["Em", "Am", "G", "F", "0,31%", "3,6,5,4"],
+  third: ["E", "Am", "F", "C", "0.19%", "3,6,4,1"],
 };
 var dictF = {
-  first: ["F", "C", "G", "Am", "2,3%"],
-  second: ["F", "G", "Am", "F", "1,5%"],
-  third: ["F", "Am", "G", "F", "0,84%"],
+  first: ["F", "C", "G", "Am", "2,3%", "4,1,5,6"],
+  second: ["F", "G", "Am", "F", "1,5%", "4,5,6,4"],
+  third: ["F", "Am", "G", "F", "0,84%", "4,6,5,4"],
 };
 var dictG = {
-  first: ["G", "Am", "F", "C", "2,1%"],
-  second: ["G", "F", "C", "G", "1,5%"],
-  third: ["G", "C", "F", "G", "1,2%"],
+  first: ["G", "Am", "F", "C", "2,1%", "5,6,4,1"],
+  second: ["G", "F", "C", "G", "1,5%", "5,4,1,5"],
+  third: ["G", "C", "F", "G", "1,2%", "5,1,4,5"],
 };
 var dictA = {
-  first: ["Am", "F", "C", "G", "2,2%"],
-  second: ["Am", "G", "F", "G", "1,4%"],
-  third: ["Am", "C", "G", "F", "0,45%"],
+  first: ["Am", "F", "C", "G", "2,2%", "6,4,1,5"],
+  second: ["Am", "G", "F", "G", "1,4%", "6,5,4,5"],
+  third: ["Am", "C", "G", "F", "0,45%", "6,1,5,4"],
 };
 var dictB = {
-  first: ["B", "C", "B", "C", "0,012%"],
-  second: ["B", "E", "Am", "G", "0,006%"],
-  third: ["B", "Em", "C", "G", "0,006%"],
+  first: ["B", "C", "B", "C", "0,012%", "7,1,7,1"],
+  second: ["B", "E", "Am", "G", "0,006%", "7,3,6,5"],
+  third: ["B", "Em", "C", "G", "0,006%", "7,3,1,5"],
 };
 
 
 function App() {
-  var nums;
-  var sufix;
-  var chords;
-  var finalProb;
-  
-  sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
-  nums = dictC.firstNum;
-  sufix = sufix + nums;
-  chords = GetInfo(sufix);
-  finalProb = chords[0]?.probability;
-  console.log(finalProb);
-  console.log(chords);
+    var nums, sufix, sufixSong, songs, chords, finalProb;
+    const username = "user" //Modificar aqui username
+    const chordCombinations = [];
+
+    // useEffect(() => {
+    //   axios //Axios para Backend
+    //   .get(`http://localhost:8000/api/user/${username}/`)
+    //   .then((response) => {
+    //   console.log(response.data)
+    //   // const chordsChosen = response.data.chords
+    //   })})
+      
+    sufixSong = "songs?cp="
+
+    // sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
+    // nums = "1,2,3,4";
+    // sufix = sufix + nums;
+    // chords = GetInfo(sufix);
+    // finalProb = chords[0]?.probability;
+    // console.log(finalProb);
+    // console.log(chords);
 
 
     const ChordsButton = styled(Button) (({ theme }) => ({
@@ -231,7 +241,6 @@ function App() {
             </Route>
 
             
-
             {/* Main Route */}
             <Route path="/Main">
               <div className="content">
@@ -254,6 +263,7 @@ function App() {
                   </div> 
               </div>
             </Route>   
+
 
             {/* Chord C */}
             <Route path="/ChordC">
@@ -306,6 +316,53 @@ function App() {
               </div>
             </Route>
 
+            <Route path="/songs-with-C-G-Am-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação C-G-Am-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-C-G-F-C"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação C-G-F-C </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-C-F-C-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação C-F-C-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
+
             {/* Chord D */}
             <Route path="/ChordD">
               <div className="content">
@@ -356,6 +413,53 @@ function App() {
                 </div> 
               </div>
             </Route>
+
+            <Route path="/songs-with-D-A-Bm-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação D-A-Bm-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-D-G-A-D"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação D-G-A-D </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-D-Em-Bm-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação D-Em-Bm-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
 
             {/* Chord E */}
             <Route path="/ChordE">
@@ -408,6 +512,53 @@ function App() {
               </div>
             </Route>
 
+            <Route path="/songs-with-Em-F-G-Am"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação Em-F-G-Am </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-Em-Am-G-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação Em-Am-G-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-E-Am-F-C"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação E-Am-F-C </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
+
             {/* Chord F */}
             <Route path="/ChordF">
               <div className="content">
@@ -458,6 +609,53 @@ function App() {
                 </div> 
               </div>
             </Route>
+
+            <Route path="/songs-with-F-C-G-Am"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação F-C-G-Am </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-F-G-Am-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação F-G-Am-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-F-Am-G-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação F-Am-G-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
 
              {/* Chord G */}
              <Route path="/ChordG">
@@ -510,6 +708,53 @@ function App() {
               </div>
             </Route>
 
+            <Route path="/songs-with-G-Am-F-C"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação G-Am-F-C </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-G-F-C-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação G-F-C-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-G-C-F-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação G-C-F-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
+
             {/* Chord A */}
             <Route path="/ChordA">
               <div className="content">
@@ -561,6 +806,53 @@ function App() {
               </div>
             </Route>
 
+            <Route path="/songs-with-Am-F-C-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação Am-F-C-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-Am-G-F-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação Am-G-F-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-Am-C-G-F"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação Am-C-G-F </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+
+
             {/* Chord B */}
             <Route path="/ChordB">
               <div className="content">
@@ -609,6 +901,52 @@ function App() {
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
 
                 </div> 
+              </div>
+            </Route>
+
+            <Route path="/songs-with-B-C-B-C"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação B-C-B-C </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-B-E-Am-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação B-E-Am-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[4]?.song}</h3>
+
+                </div>
+              </div>
+            </Route>
+            <Route path="/songs-with-B-Em-C-G"> 
+              <div className="content">
+                <div className="chords">
+                  <h2> Essas são as músicas com a combinação B-Em-C-G </h2>
+                  <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
+                
+                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[0]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[1]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[2]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[3]?.song}</h3>
+                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[4]?.song}</h3>
+
+                </div>
               </div>
             </Route>
 
