@@ -101,22 +101,21 @@ var dictF = {
   third: ["F", "Am", "G", "F", "0,84%"],
 };
 var dictG = {
-  first: [],
-  second: [],
-  third: [],
+  first: ["G", "Am", "F", "C", "2,1%"],
+  second: ["G", "F", "C", "G", "1,5%"],
+  third: ["G", "C", "F", "G", "1,2%"],
 };
-
 var dictA = {
-  first: [],
-  second: [],
-  third: [],
+  first: ["Am", "F", "C", "G", "2,2%"],
+  second: ["Am", "G", "F", "G", "1,4%"],
+  third: ["Am", "C", "G", "F", "0,45%"],
+};
+var dictB = {
+  first: ["B", "C", "B", "C", "0,012%"],
+  second: ["B", "E", "Am", "G", "0,006%"],
+  third: ["B", "Em", "C", "G", "0,006%"],
 };
 
-var dictB = {
-  first: [],
-  second: [],
-  third: [],
-};
 
 function App() {
   var nums;
@@ -128,16 +127,10 @@ function App() {
   sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
   nums = dictC.firstNum;
   sufix = sufix + nums;
-
-  // var prob = GetInfo("nodes?cp=" + ).slice(0)?.probability;
-  // var prob1 = GetInfo("nodes?cp=1,5").slice(0,1)?.probability;
-  // var prob2 = GetInfo("nodes?cp=1,5,6")[0]?.probability; 
-  // var prob3 = GetInfo("nodes?cp=1,5,6,4")[0]?.probability;
-  // finalProb = prob * prob1 * prob2 * prob3;
+  chords = GetInfo(sufix);
+  finalProb = chords[0]?.probability;
   console.log(finalProb);
-  // console.log(chords);
-
-
+  console.log(chords);
 
 
     const ChordsButton = styled(Button) (({ theme }) => ({
@@ -255,14 +248,13 @@ function App() {
                     </div>
                     <div className="chordsButton2">
                         <Link to="/ChordG" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">G</ChordsButton> </Link>
-                        <Link to="/ChordH" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">A</ChordsButton> </Link>
-                        <Link to="/ChordI" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">B</ChordsButton> </Link>
+                        <Link to="/ChordA" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">A</ChordsButton> </Link>
+                        <Link to="/ChordB" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">B</ChordsButton> </Link>
                     </div>
 
                   </div> 
               </div>
             </Route>   
-
 
             {/* Chord C */}
             <Route path="/ChordC">
@@ -430,7 +422,7 @@ function App() {
                   <div className="chordsButton3">
                     <h4> A primeira combinação mais provável ({dictF.first[4]}), será: </h4>
                     <div className="groupByProbability">
-                      <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
+                      <Link to="/songs-with-F-C-G-Am" style={{ textDecoration: 'none' }}> 
                       <ChordsButton variant="contained">{dictF.first[0]}</ChordsButton> 
                       <ChordsButton variant="contained">{dictF.first[1]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.first[2]}</ChordsButton>
@@ -442,7 +434,7 @@ function App() {
                   <div className="chordsButton3">
                     <h4> A segunda combinação mais provável ({dictF.second[4]}), será: </h4>
                     <div className="groupByProbability">
-                      <Link to="/songs-with-C-G-F-C" style={{ textDecoration: 'none' }}> 
+                      <Link to="/songs-with-F-G-Am-F" style={{ textDecoration: 'none' }}> 
                       <ChordsButton variant="contained">{dictF.second[0]}</ChordsButton> 
                       <ChordsButton variant="contained">{dictF.second[1]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.second[2]}</ChordsButton>
@@ -454,7 +446,7 @@ function App() {
                   <div className="chordsButton3">
                     <h4> A terceira combinação mais provável ({dictF.third[4]}), será: </h4>
                     <div className="groupByProbability">
-                      <Link to="/songs-with-C-F-C-F" style={{ textDecoration: 'none' }}> 
+                      <Link to="/songs-with-F-Am-G-F" style={{ textDecoration: 'none' }}> 
                       <ChordsButton variant="contained">{dictF.third[0]}</ChordsButton> 
                       <ChordsButton variant="contained">{dictF.third[1]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.third[2]}</ChordsButton>
@@ -467,7 +459,159 @@ function App() {
                 </div> 
               </div>
             </Route>
-            
+
+             {/* Chord G */}
+             <Route path="/ChordG">
+              <div className="content">
+                <div className="chords"> 
+                <h2> Ótima escolha! </h2>
+                  <div className="textWithChord">
+                    <h3> Essas são as combinações mais prováveis usando o acorde </h3>
+                    <ChordsButtonSelected variant="contained">G</ChordsButtonSelected> 
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A primeira combinação mais provável ({dictG.first[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-G-Am-F-C" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictG.first[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictG.first[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.first[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.first[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A segunda combinação mais provável ({dictG.second[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-G-F-C-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictG.second[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictG.second[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.second[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.second[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A terceira combinação mais provável ({dictG.third[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-G-C-F-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictG.third[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictG.third[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.third[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictG.third[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
+
+                </div> 
+              </div>
+            </Route>
+
+            {/* Chord A */}
+            <Route path="/ChordA">
+              <div className="content">
+                <div className="chords"> 
+                <h2> Ótima escolha! </h2>
+                  <div className="textWithChord">
+                    <h3> Essas são as combinações mais prováveis usando o acorde </h3>
+                    <ChordsButtonSelected variant="contained">A</ChordsButtonSelected> 
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A primeira combinação mais provável ({dictA.first[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-Am-F-C-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictA.first[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictA.first[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.first[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.first[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A segunda combinação mais provável ({dictA.second[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-Am-G-F-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictA.second[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictA.second[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.second[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.second[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A terceira combinação mais provável ({dictA.third[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-Am-C-G-F" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictA.third[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictA.third[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.third[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictA.third[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
+
+                </div> 
+              </div>
+            </Route>
+
+            {/* Chord B */}
+            <Route path="/ChordB">
+              <div className="content">
+                <div className="chords"> 
+                <h2> Ótima escolha! </h2>
+                  <div className="textWithChord">
+                    <h3> Essas são as combinações mais prováveis usando o acorde </h3>
+                    <ChordsButtonSelected variant="contained">B</ChordsButtonSelected> 
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A primeira combinação mais provável ({dictB.first[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-B-C-B-C" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictB.first[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictB.first[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.first[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.first[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A segunda combinação mais provável ({dictB.second[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-B-E-Am-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictB.second[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictB.second[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.second[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.second[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  <div className="chordsButton3">
+                    <h4> A terceira combinação mais provável ({dictB.third[4]}), será: </h4>
+                    <div className="groupByProbability">
+                      <Link to="/songs-with-B-Em-C-G" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictB.third[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictB.third[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.third[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictB.third[3]}</ChordsButton>
+                      </Link>
+                    </div>
+                  </div>
+                  <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
+
+                </div> 
+              </div>
+            </Route>
 
           </BrowserRouter>
         </div>
