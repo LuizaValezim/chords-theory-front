@@ -20,7 +20,7 @@ function GetInfo(sufix){
     return chords;
 }
 
-// EU ESTAVA TENTANDO AUTOMATIZAR ESSE PROCESSO, MAS NÃO SEI O QUÃO MELHOR SERIA
+// EU ESTAVA TENTANDO AUTOMATIZAR ESSE PROCESSO, MAS NÃO FUNCIONA @_@
 
 // var listChords = {
 //   "1": [],
@@ -123,7 +123,6 @@ function App() {
   var chords;
   var finalProb;
   
-  // InfoByChord("1");
   sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
   nums = dictC.firstNum;
   sufix = sufix + nums;
