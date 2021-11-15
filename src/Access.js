@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function accessToken(){
     return await axios
-    .post("https://api.hooktheory.com/v1/users/auth", {username: "luizavap", password:"luizavalezim123"}, {headers: {'Content-Type': 'application/json', 'Accept':'application/json'}})
+    .post("https://api.hooktheory.com/v1/users/auth", {username: "luizavalezim", password:"luizavalezim123"}, {headers: {'Content-Type': 'application/json', 'Accept':'application/json'}})
     .then((response) => {
       var token = response.data.activkey;
       return token;

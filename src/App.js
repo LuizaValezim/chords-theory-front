@@ -1,84 +1,26 @@
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import * as React from 'react';
 import {accessToken, accessChords} from "./Access.js";
 import axios from "axios";
 
 import "./App.css";
 
 function GetInfo(sufix){
-    const [chords, setChords] = useState([]);
+    const [info, setInfo] = useState([]);
 
     useEffect(() => {
         accessToken().then((token) => {
                       accessChords(token, sufix)
-                          .then((chr) => setChords(chr))
+                          .then((chr) => setInfo(chr))
         })}, []);
 
-    return chords;
+    console.log(info);
+
+    return info;
 }
-
-// EU ESTAVA TENTANDO AUTOMATIZAR ESSE PROCESSO, MAS NÃO FUNCIONA @_@
-
-// var listChords = {
-//   "1": [],
-//   "2": [],
-//   "3": [],
-//   "4": [],
-//   "5": [],
-//   "6": [],
-//   "7": [],
-// };
-
-// var listC = [];
-// var listD = [];
-// var listE = [];
-// var listF = [];
-// var listG = [];
-// var listA = [];
-// var listB = [];
-
-
-// function InfoByChord(firstChord){
-//   var sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
-//   var finalProb = 1;
-//   var list;
-//   sufix = sufix + firstChord;
-  
-//   for (var i in [0,1,2,3]){
-//     var chords = GetInfo(sufix);
-    
-//     // Appending the second chord
-//     var chord = chords[i]?.chord_ID;
-//     var prob = chords[i]?.probability;
-//     finalProb = finalProb * prob;
-//     sufix = sufix + ',' + chord;
-    
-//     // Appending the third chord
-//     chord = chords[0]?.chord_ID;
-//     prob = chords[0]?.probability;
-//     finalProb = finalProb * prob;
-//     list.push(chord)
-//     sufix = sufix + ',' + chord;
-    
-    
-//     // Appending the forth chord
-//     chord = chords[0]?.chord_ID;
-//     prob = chords[0]?.probability;
-//     finalProb = finalProb * prob;
-//     list.push(chord)
-//   }
-  
-//   if (firstChord === "1"){ listC = list; };
-//   if (firstChord === "2"){ listD = list; };
-//   if (firstChord === "3"){ listE = list; };
-//   if (firstChord === "4"){ listF = list; };
-//   if (firstChord === "5"){ listG = list; };
-//   if (firstChord === "6"){ listA = list; };
-//   if (firstChord === "7"){ listB = list; };
-// }
 
 
 var dictC = {
@@ -120,26 +62,41 @@ var dictB = {
 
 function App() {
     var nums, sufix, sufixSong, songs, chords, finalProb;
-    const username = "user" //Modificar aqui username
-    const chordCombinations = [];
 
+    // let promises = [];
+    // const [getCombo, setCombo] = useState([]);
+
+    
     // useEffect(() => {
-    //   axios //Axios para Backend
-    //   .get(`http://localhost:8000/api/user/${username}/`)
+    //   axios // Backend
+    //   .get(`localhost:3000/favorites/${sufix}`)
     //   .then((response) => {
-    //   console.log(response.data)
-    //   // const chordsChosen = response.data.chords
-    //   })})
+    //     const combinations = response.data.combinations;
+    //     for (let combination of combinations) {
+    //       promises.push(GetInfo(combination))
+    //       getCombo.push(GetInfo(combination)[0].chord_ID);
+    //     };
+    //   }
+    //   )})
       
-    sufixSong = "songs?cp="
-
-    // sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
-    // nums = "1,2,3,4";
-    // sufix = sufix + nums;
-    // chords = GetInfo(sufix);
-    // finalProb = chords[0]?.probability;
-    // console.log(finalProb);
-    // console.log(chords);
+    // setCombo(getCombo);
+    // Promise.all(promises);
+    // console.log(getCombo);
+      
+    sufixSong = "songs?cp=";
+    sufixSong = sufixSong + dictC.first[5];
+    songs = GetInfo(sufixSong);
+    console.log(songs[0]?.artist);
+    console.log(GetInfo("songs?cp=" + dictC.first[5])[0]?.song);
+    
+    
+    sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
+    nums = "1";
+    sufix = sufix + nums;
+    chords = GetInfo(sufix);
+    finalProb = chords[0]?.probability;
+    console.log(finalProb);
+    console.log(chords);
 
 
     const ChordsButton = styled(Button) (({ theme }) => ({
@@ -194,7 +151,7 @@ function App() {
       },
     }));
 
-    const YesButton = styled(Button) (({ theme }) => ({
+    const MainButton = styled(Button) (({ theme }) => ({
       color: theme.palette.getContrastText("#F24150"),
       backgroundColor: "#F24150",
       borderRadius: 10,
@@ -220,6 +177,58 @@ function App() {
       },
     }));
 
+    const StartButton = styled(Button) (({ theme }) => ({
+      color: theme.palette.getContrastText("#F24150"),
+      backgroundColor: "#F24150",
+      borderRadius: 10,
+      padding: 15,
+      margin: 12,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      fontweight: "bold",
+      '&:hover': {
+        backgroundColor: "#FF8C96",
+      },
+    }));
+
+    const FavoriteButton = styled(Button) (({ theme }) => ({
+      color: theme.palette.getContrastText("#FFFFFF"),
+      backgroundColor: "#FFFFFF",
+      borderRadius: 50,
+      padding: 20,
+      margin: 5,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      fontweight: "bold",
+      '&:hover': {
+        backgroundColor: "#f24150",
+      },
+    }));
+
 
     return (
       <div className="main">
@@ -236,7 +245,7 @@ function App() {
                 <h2> Bem-vindo/a ao Chords Theory! </h2>
                 <p> Está querendo compor uma música, mas não sabe por onde começar? 
                     Não se preocupe, vou te ajudar a escolher a melhor combinação de acordes usando teoria musical.</p>
-                <Link to="/Main" style={{ textDecoration: 'none' }}> <YesButton variant="contained">Começar</YesButton> </Link>
+                <Link to="/Main" style={{ textDecoration: 'none' }}> <StartButton variant="contained">Começar</StartButton> </Link>
               </div>
             </Route>
 
@@ -244,6 +253,7 @@ function App() {
             {/* Main Route */}
             <Route path="/Main">
               <div className="content">
+
                   <div className="chords"> 
 
                     <h3> Escolha um acorde para começar:</h3>
@@ -259,10 +269,44 @@ function App() {
                         <Link to="/ChordA" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">A</ChordsButton> </Link>
                         <Link to="/ChordB" style={{ textDecoration: 'none' }}> <ChordsButton variant="contained" href="#text-buttons">B</ChordsButton> </Link>
                     </div>
-
                   </div> 
               </div>
+              <Link to="/Favorites" style={{ textDecoration: 'none' }}>
+              <FavoriteButton variant="contained" fontSize="small">❤</FavoriteButton> 
+              </Link>
+
             </Route>   
+
+           <Route path="/Favorites">
+           <div className="content">
+
+            <div className="chords"> 
+
+              <h2>Aqui está as suas combinações favoritas!</h2>
+
+              <div className="chordsButton3">
+                  <div className="groupByProbability">
+                    <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictC.first[0]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictC.first[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictC.first[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictC.first[3]}</ChordsButton>
+                    </Link>
+                  </div>
+
+                  <div className="groupByProbability">
+                    <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
+                      <ChordsButton variant="contained">{dictE.first[0]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictE.first[1]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictE.first[2]}</ChordsButton>
+                      <ChordsButton variant="contained">{dictE.first[3]}</ChordsButton>
+                    </Link>
+                  </div>
+              </div>
+            </div> 
+            <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+            </div>
+           </Route> 
 
 
             {/* Chord C */}
@@ -279,11 +323,12 @@ function App() {
                     <h4> A primeira combinação mais provável ({dictC.first[4]}), será: </h4>
                     <div className="groupByProbability">
                       <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
-                      <ChordsButton variant="contained">{dictC.first[0]}</ChordsButton> 
+                      <ChordsButton variant="contained">{dictC.first[0]}</ChordsButton>
                       <ChordsButton variant="contained">{dictC.first[1]}</ChordsButton>
                       <ChordsButton variant="contained">{dictC.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictC.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
                     </div>
                   </div>
                   
@@ -296,6 +341,8 @@ function App() {
                       <ChordsButton variant="contained">{dictC.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictC.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -308,12 +355,15 @@ function App() {
                       <ChordsButton variant="contained">{dictC.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictC.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
 
-                </div> 
+                </div>
               </div>
+              
             </Route>
 
             <Route path="/songs-with-C-G-Am-F"> 
@@ -330,6 +380,7 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
             </Route>
             <Route path="/songs-with-C-G-F-C"> 
               <div className="content">
@@ -345,6 +396,7 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
             </Route>
             <Route path="/songs-with-C-F-C-F"> 
               <div className="content">
@@ -360,6 +412,7 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
             </Route>
 
 
@@ -382,6 +435,8 @@ function App() {
                       <ChordsButton variant="contained">{dictD.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictD.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -394,6 +449,8 @@ function App() {
                       <ChordsButton variant="contained">{dictD.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictD.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -406,6 +463,8 @@ function App() {
                       <ChordsButton variant="contained">{dictD.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictD.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -428,6 +487,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-D-G-A-D"> 
               <div className="content">
@@ -443,6 +504,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-D-Em-Bm-G"> 
               <div className="content">
@@ -458,6 +521,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
 
 
@@ -480,6 +545,8 @@ function App() {
                       <ChordsButton variant="contained">{dictE.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictE.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -492,6 +559,8 @@ function App() {
                       <ChordsButton variant="contained">{dictE.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictE.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -504,6 +573,8 @@ function App() {
                       <ChordsButton variant="contained">{dictE.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictE.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -526,6 +597,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+              
             </Route>
             <Route path="/songs-with-Em-Am-G-F"> 
               <div className="content">
@@ -541,6 +614,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-E-Am-F-C"> 
               <div className="content">
@@ -556,6 +631,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
 
 
@@ -578,6 +655,8 @@ function App() {
                       <ChordsButton variant="contained">{dictF.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -590,6 +669,8 @@ function App() {
                       <ChordsButton variant="contained">{dictF.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -602,6 +683,8 @@ function App() {
                       <ChordsButton variant="contained">{dictF.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictF.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -624,6 +707,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-F-G-Am-F"> 
               <div className="content">
@@ -639,6 +724,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-F-Am-G-F"> 
               <div className="content">
@@ -654,6 +741,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+              
             </Route>
 
 
@@ -676,6 +765,8 @@ function App() {
                       <ChordsButton variant="contained">{dictG.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictG.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -688,6 +779,8 @@ function App() {
                       <ChordsButton variant="contained">{dictG.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictG.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -700,6 +793,8 @@ function App() {
                       <ChordsButton variant="contained">{dictG.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictG.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -722,6 +817,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-G-F-C-G"> 
               <div className="content">
@@ -737,6 +834,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-G-C-F-G"> 
               <div className="content">
@@ -752,6 +851,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
 
 
@@ -774,6 +875,8 @@ function App() {
                       <ChordsButton variant="contained">{dictA.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictA.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -786,6 +889,8 @@ function App() {
                       <ChordsButton variant="contained">{dictA.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictA.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -798,6 +903,8 @@ function App() {
                       <ChordsButton variant="contained">{dictA.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictA.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -820,6 +927,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-Am-G-F-G"> 
               <div className="content">
@@ -835,6 +944,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-Am-C-G-F"> 
               <div className="content">
@@ -850,6 +961,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
 
 
@@ -872,6 +985,8 @@ function App() {
                       <ChordsButton variant="contained">{dictB.first[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictB.first[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -884,6 +999,8 @@ function App() {
                       <ChordsButton variant="contained">{dictB.second[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictB.second[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   
@@ -896,6 +1013,8 @@ function App() {
                       <ChordsButton variant="contained">{dictB.third[2]}</ChordsButton>
                       <ChordsButton variant="contained">{dictB.third[3]}</ChordsButton>
                       </Link>
+                      <FavoriteButton onClick={() => { alert('Favoritado!') }} variant="contained" fontSize="small">❤</FavoriteButton> 
+
                     </div>
                   </div>
                   <h5> Clicando em alguma combinação, você poderá ver as músicas que também a utilizam. </h5>
@@ -918,6 +1037,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-B-E-Am-G"> 
               <div className="content">
@@ -933,6 +1054,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
             <Route path="/songs-with-B-Em-C-G"> 
               <div className="content">
@@ -948,6 +1071,8 @@ function App() {
 
                 </div>
               </div>
+              <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
+
             </Route>
 
           </BrowserRouter>
