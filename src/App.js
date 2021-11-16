@@ -3,8 +3,10 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useParams, useHistory } from 'react-router-dom';
 import {accessToken, accessChords} from "./Access.js";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 import "./App.css";
 
@@ -63,31 +65,62 @@ var dictB = {
 function App() {
     var nums, sufix, sufixSong, songs, chords, finalProb;
 
-    // let promises = [];
-    // const [getCombo, setCombo] = useState([]);
+    // Parte que será usada no deploy -- não funcionando
+
+    // const params = useParams();
+    // const [favs, setFavs] = useState([]);
+
+    // const loadData = () => {
+    //     axios
+    //       .get(`https://frozen-badlands-04318.herokuapp.com/api/combinations/${params.combination_title}/`)
+    //       .then((res) =>{
+    //         let combinations = res.data;
+    //         console.log(combinations)
+    //         setFavs(res.data);
+    //       });
+    // };
+
+    // useEffect(() => {
+    //     loadData();
+    //   }, []);
 
     
-    // useEffect(() => {
-    //   axios // Backend
-    //   .get(`localhost:3000/favorites/${sufix}`)
-    //   .then((response) => {
-    //     const combinations = response.data.combinations;
-    //     for (let combination of combinations) {
-    //       promises.push(GetInfo(combination))
-    //       getCombo.push(GetInfo(combination)[0].chord_ID);
-    //     };
-    //   }
-    //   )})
-      
-    // setCombo(getCombo);
-    // Promise.all(promises);
-    // console.log(getCombo);
+
+    // Fazendo a chamada para as músicas
+    var songsC1 = GetInfo("songs?cp=" + dictC.first[5]);
+    var songsC2 = GetInfo("songs?cp=" + dictC.second[5]);
+    var songsC3 = GetInfo("songs?cp=" + dictC.third[5]);
+
+    var songsD1 = GetInfo("songs?cp=" + dictD.first[5]);
+    var songsD2 = GetInfo("songs?cp=" + dictD.second[5]);
+    var songsD3 = GetInfo("songs?cp=" + dictD.third[5]);
+
+    var songsE1 = GetInfo("songs?cp=" + dictE.first[5]);
+    var songsE2 = GetInfo("songs?cp=" + dictE.second[5]);
+    var songsE3 = GetInfo("songs?cp=" + dictE.third[5]);
+
+    var songsF1 = GetInfo("songs?cp=" + dictF.first[5]);
+    var songsF2 = GetInfo("songs?cp=" + dictF.second[5]);
+    var songsF3 = GetInfo("songs?cp=" + dictF.third[5]);
+
+    var songsG1 = GetInfo("songs?cp=" + dictG.first[5]);
+    var songsG2 = GetInfo("songs?cp=" + dictG.second[5]);
+    var songsG3 = GetInfo("songs?cp=" + dictG.third[5]);
+
+    var songsA1 = GetInfo("songs?cp=" + dictA.first[5]);
+    var songsA2 = GetInfo("songs?cp=" + dictA.second[5]);
+    var songsA3 = GetInfo("songs?cp=" + dictA.third[5]);
+
+    var songsB1 = GetInfo("songs?cp=" + dictB.first[5]);
+    var songsB2 = GetInfo("songs?cp=" + dictB.second[5]);
+    var songsB3 = GetInfo("songs?cp=" + dictB.third[5]);
+
       
     sufixSong = "songs?cp=";
     sufixSong = sufixSong + dictC.first[5];
     songs = GetInfo(sufixSong);
     console.log(songs[0]?.artist);
-    console.log(GetInfo("songs?cp=" + dictC.first[5])[0]?.song);
+    console.log(songsC1[0]?.song);
     
     
     sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
@@ -229,6 +262,32 @@ function App() {
       },
     }));
 
+    const UnfavoriteButton = styled(Button) (({ theme }) => ({
+      color: theme.palette.getContrastText("#f24150"),
+      backgroundColor: "#f24150",
+      borderRadius: 50,
+      padding: 20,
+      margin: 5,
+      fontFamily: [
+        'Poppins',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Rubik',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      fontweight: "bold",
+      '&:hover': {
+        backgroundColor: "#FFFFFF",
+      },
+    }));
+
 
     return (
       <div className="main">
@@ -285,23 +344,17 @@ function App() {
               <h2>Aqui está as suas combinações favoritas!</h2>
 
               <div className="chordsButton3">
-                  <div className="groupByProbability">
-                    <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
-                      <ChordsButton variant="contained">{dictC.first[0]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictC.first[1]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictC.first[2]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictC.first[3]}</ChordsButton>
-                    </Link>
-                  </div>
-
-                  <div className="groupByProbability">
-                    <Link to="/songs-with-C-G-Am-F" style={{ textDecoration: 'none' }}> 
-                      <ChordsButton variant="contained">{dictE.first[0]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictE.first[1]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictE.first[2]}</ChordsButton>
-                      <ChordsButton variant="contained">{dictE.first[3]}</ChordsButton>
-                    </Link>
-                  </div>
+                  {/* <div className="groupByProbability">
+                  {
+                    favs.map(
+                      (combination) => (
+                        <div>
+                          <ChordsButton key={`combinações__${combination.id}`} src={combination.chords} id={combination.id} combination_title={params.combination_title}></ChordsButton> 
+                          <UnfavoriteButton onClick={() => { alert('Desfavoritado') }} variant="contained" fontSize="small">❤</UnfavoriteButton> 
+                        </div>
+                      ))
+                  }
+                  </div> */}
               </div>
             </div> 
             <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
@@ -372,11 +425,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação C-G-Am-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.first[5])[4]?.song}</h3>
+                  <h3> >> {songsC1[0]?.artist} - {songsC1[0]?.song} ({songsC1[0]?.section})</h3>
+                  <h3> >> {songsC1[1]?.artist} - {songsC1[1]?.song} ({songsC1[1]?.section})</h3>
+                  <h3> >> {songsC1[2]?.artist} - {songsC1[2]?.song} ({songsC1[2]?.section})</h3>
+                  <h3> >> {songsC1[3]?.artist} - {songsC1[3]?.song} ({songsC1[3]?.section})</h3>
+                  <h3> >> {songsC1[4]?.artist} - {songsC1[4]?.song} ({songsC1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -388,11 +441,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação C-G-F-C </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.second[5])[4]?.song}</h3>
+                  <h3> >> {songsC2[0]?.artist} - {songsC2[0]?.song} ({songsC1[0]?.section})</h3>
+                  <h3> >> {songsC2[1]?.artist} - {songsC2[1]?.song} ({songsC2[1]?.section})</h3>
+                  <h3> >> {songsC2[2]?.artist} - {songsC2[2]?.song} ({songsC2[2]?.section})</h3>
+                  <h3> >> {songsC2[3]?.artist} - {songsC2[3]?.song} ({songsC2[3]?.section})</h3>
+                  <h3> >> {songsC2[4]?.artist} - {songsC2[4]?.song} ({songsC2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -404,11 +457,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação C-F-C-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[4]?.song}</h3>
+                  <h3> >> {songsC3[0]?.artist} - {songsC3[0]?.song} ({songsC3[0]?.section})</h3>
+                  <h3> >> {songsC3[1]?.artist} - {songsC3[1]?.song} ({songsC3[1]?.section})</h3>
+                  <h3> >> {songsC3[2]?.artist} - {songsC3[2]?.song} ({songsC3[2]?.section})</h3>
+                  <h3> >> {songsC3[3]?.artist} - {songsC3[3]?.song} ({songsC3[3]?.section})</h3>
+                  <h3> >> {songsC3[4]?.artist} - {songsC3[4]?.song} ({songsC3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -479,11 +532,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação D-A-Bm-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictD.first[5])[4]?.song}</h3>
+                  <h3> >> {songsD1[0]?.artist} - {songsD1[0]?.song} ({songsD1[0]?.section})</h3>
+                  <h3> >> {songsD1[1]?.artist} - {songsD1[1]?.song} ({songsD1[1]?.section})</h3>
+                  <h3> >> {songsD1[2]?.artist} - {songsD1[2]?.song} ({songsD1[2]?.section})</h3>
+                  <h3> >> {songsD1[3]?.artist} - {songsD1[3]?.song} ({songsD1[3]?.section})</h3>
+                  <h3> >> {songsD1[4]?.artist} - {songsD1[4]?.song} ({songsD1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -496,11 +549,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação D-G-A-D </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictD.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictD.second[5])[4]?.song}</h3>
+                  <h3> >> {songsD2[0]?.artist} - {songsD2[0]?.song} ({songsD2[0]?.section})</h3>
+                  <h3> >> {songsD2[1]?.artist} - {songsD2[1]?.song} ({songsD2[1]?.section})</h3>
+                  <h3> >> {songsD2[2]?.artist} - {songsD2[2]?.song} ({songsD2[2]?.section})</h3>
+                  <h3> >> {songsD2[3]?.artist} - {songsD2[3]?.song} ({songsD2[3]?.section})</h3>
+                  <h3> >> {songsD2[4]?.artist} - {songsD2[4]?.song} ({songsD2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -513,11 +566,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação D-Em-Bm-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictC.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictC.third[5])[4]?.song}</h3>
+                  <h3> >> {songsD3[0]?.artist} - {songsD3[0]?.song} ({songsD3[0]?.section})</h3>
+                  <h3> >> {songsD3[1]?.artist} - {songsD3[1]?.song} ({songsD3[1]?.section})</h3>
+                  <h3> >> {songsD3[2]?.artist} - {songsD3[2]?.song} ({songsD3[2]?.section})</h3>
+                  <h3> >> {songsD3[3]?.artist} - {songsD3[3]?.song} ({songsD3[3]?.section})</h3>
+                  <h3> >> {songsD3[4]?.artist} - {songsD3[4]?.song} ({songsD3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -589,11 +642,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação Em-F-G-Am </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.first[5])[4]?.song}</h3>
+                  <h3> >> {songsE1[0]?.artist} - {songsE1[0]?.song} ({songsE1[0]?.section})</h3>
+                  <h3> >> {songsE1[1]?.artist} - {songsE1[1]?.song} ({songsE1[1]?.section})</h3>
+                  <h3> >> {songsE1[2]?.artist} - {songsE1[2]?.song} ({songsE1[2]?.section})</h3>
+                  <h3> >> {songsE1[3]?.artist} - {songsE1[3]?.song} ({songsE1[3]?.section})</h3>
+                  <h3> >> {songsE1[4]?.artist} - {songsE1[4]?.song} ({songsE1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -606,11 +659,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação Em-Am-G-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.second[5])[4]?.song}</h3>
+                  <h3> >> {songsE2[0]?.artist} - {songsE2[0]?.song} ({songsE2[0]?.section})</h3>
+                  <h3> >> {songsE2[1]?.artist} - {songsE2[1]?.song} ({songsE2[1]?.section})</h3>
+                  <h3> >> {songsE2[2]?.artist} - {songsE2[2]?.song} ({songsE2[2]?.section})</h3>
+                  <h3> >> {songsE2[3]?.artist} - {songsE2[3]?.song} ({songsE2[3]?.section})</h3>
+                  <h3> >> {songsE2[4]?.artist} - {songsE2[4]?.song} ({songsE2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -623,11 +676,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação E-Am-F-C </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictE.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictE.third[5])[4]?.song}</h3>
+                  <h3> >> {songsE3[0]?.artist} - {songsE3[0]?.song} ({songsE3[0]?.section})</h3>
+                  <h3> >> {songsE3[1]?.artist} - {songsE3[1]?.song} ({songsE3[1]?.section})</h3>
+                  <h3> >> {songsE3[2]?.artist} - {songsE3[2]?.song} ({songsE3[2]?.section})</h3>
+                  <h3> >> {songsE3[3]?.artist} - {songsE3[3]?.song} ({songsE3[3]?.section})</h3>
+                  <h3> >> {songsE3[4]?.artist} - {songsE3[4]?.song} ({songsE3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -699,11 +752,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação F-C-G-Am </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.first[5])[4]?.song}</h3>
+                  <h3> >> {songsF1[0]?.artist} - {songsF1[0]?.song} ({songsF1[0]?.section})</h3>
+                  <h3> >> {songsF1[1]?.artist} - {songsF1[1]?.song} ({songsF1[1]?.section})</h3>
+                  <h3> >> {songsF1[2]?.artist} - {songsF1[2]?.song} ({songsF1[2]?.section})</h3>
+                  <h3> >> {songsF1[3]?.artist} - {songsF1[3]?.song} ({songsF1[3]?.section})</h3>
+                  <h3> >> {songsF1[4]?.artist} - {songsF1[4]?.song} ({songsF1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -716,11 +769,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação F-G-Am-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.second[5])[4]?.song}</h3>
+                  <h3> >> {songsF2[0]?.artist} - {songsF2[0]?.song} ({songsF2[0]?.section})</h3>
+                  <h3> >> {songsF2[1]?.artist} - {songsF2[1]?.song} ({songsF2[1]?.section})</h3>
+                  <h3> >> {songsF2[2]?.artist} - {songsF2[2]?.song} ({songsF2[2]?.section})</h3>
+                  <h3> >> {songsF2[3]?.artist} - {songsF2[3]?.song} ({songsF2[3]?.section})</h3>
+                  <h3> >> {songsF2[4]?.artist} - {songsF2[4]?.song} ({songsF2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -733,11 +786,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação F-Am-G-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictF.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictF.third[5])[4]?.song}</h3>
+                  <h3> >> {songsF3[0]?.artist} - {songsF3[0]?.song} ({songsF3[0]?.section})</h3>
+                  <h3> >> {songsF3[1]?.artist} - {songsF3[1]?.song} ({songsF3[1]?.section})</h3>
+                  <h3> >> {songsF3[2]?.artist} - {songsF3[2]?.song} ({songsF3[2]?.section})</h3>
+                  <h3> >> {songsF3[3]?.artist} - {songsF3[3]?.song} ({songsF3[3]?.section})</h3>
+                  <h3> >> {songsF3[4]?.artist} - {songsF3[4]?.song} ({songsF3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -809,11 +862,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação G-Am-F-C </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.first[5])[4]?.song}</h3>
+                  <h3> >> {songsG1[0]?.artist} - {songsG1[0]?.song} ({songsG1[0]?.section})</h3>
+                  <h3> >> {songsG1[1]?.artist} - {songsG1[1]?.song} ({songsG1[1]?.section})</h3>
+                  <h3> >> {songsG1[2]?.artist} - {songsG1[2]?.song} ({songsG1[2]?.section})</h3>
+                  <h3> >> {songsG1[3]?.artist} - {songsG1[3]?.song} ({songsG1[3]?.section})</h3>
+                  <h3> >> {songsG1[4]?.artist} - {songsG1[4]?.song} ({songsG1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -826,11 +879,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação G-F-C-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.second[5])[4]?.song}</h3>
+                  <h3> >> {songsG2[0]?.artist} - {songsG2[0]?.song} ({songsG2[0]?.section})</h3>
+                  <h3> >> {songsG2[1]?.artist} - {songsG2[1]?.song} ({songsG2[1]?.section})</h3>
+                  <h3> >> {songsG2[2]?.artist} - {songsG2[2]?.song} ({songsG2[2]?.section})</h3>
+                  <h3> >> {songsG2[3]?.artist} - {songsG2[3]?.song} ({songsG2[3]?.section})</h3>
+                  <h3> >> {songsG2[4]?.artist} - {songsG2[4]?.song} ({songsG2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -843,11 +896,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação G-C-F-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictG.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictG.third[5])[4]?.song}</h3>
+                  <h3> >> {songsG3[0]?.artist} - {songsG3[0]?.song} ({songsG3[0]?.section})</h3>
+                  <h3> >> {songsG3[1]?.artist} - {songsG3[1]?.song} ({songsG3[1]?.section})</h3>
+                  <h3> >> {songsG3[2]?.artist} - {songsG3[2]?.song} ({songsG3[2]?.section})</h3>
+                  <h3> >> {songsG3[3]?.artist} - {songsG3[3]?.song} ({songsG3[3]?.section})</h3>
+                  <h3> >> {songsG3[4]?.artist} - {songsG3[4]?.song} ({songsG3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -919,11 +972,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação Am-F-C-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.first[5])[4]?.song}</h3>
+                  <h3> >> {songsA1[0]?.artist} - {songsA1[0]?.song} ({songsA1[0]?.section})</h3>
+                  <h3> >> {songsA1[1]?.artist} - {songsA1[1]?.song} ({songsA1[1]?.section})</h3>
+                  <h3> >> {songsA1[2]?.artist} - {songsA1[2]?.song} ({songsA1[2]?.section})</h3>
+                  <h3> >> {songsA1[3]?.artist} - {songsA1[3]?.song} ({songsA1[3]?.section})</h3>
+                  <h3> >> {songsA1[4]?.artist} - {songsA1[4]?.song} ({songsA1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -936,11 +989,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação Am-G-F-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.second[5])[4]?.song}</h3>
+                  <h3> >> {songsA2[0]?.artist} - {songsA2[0]?.song} ({songsA2[0]?.section})</h3>
+                  <h3> >> {songsA2[1]?.artist} - {songsA2[1]?.song} ({songsA2[1]?.section})</h3>
+                  <h3> >> {songsA2[2]?.artist} - {songsA2[2]?.song} ({songsA2[2]?.section})</h3>
+                  <h3> >> {songsA2[3]?.artist} - {songsA2[3]?.song} ({songsA2[3]?.section})</h3>
+                  <h3> >> {songsA2[4]?.artist} - {songsA2[4]?.song} ({songsA2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -953,11 +1006,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação Am-C-G-F </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictA.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictA.third[5])[4]?.song}</h3>
+                  <h3> >> {songsA3[0]?.artist} - {songsA3[0]?.song} ({songsA3[0]?.section})</h3>
+                  <h3> >> {songsA3[1]?.artist} - {songsA3[1]?.song} ({songsA3[1]?.section})</h3>
+                  <h3> >> {songsA3[2]?.artist} - {songsA3[2]?.song} ({songsA3[2]?.section})</h3>
+                  <h3> >> {songsA3[3]?.artist} - {songsA3[3]?.song} ({songsA3[3]?.section})</h3>
+                  <h3> >> {songsA3[4]?.artist} - {songsA3[4]?.song} ({songsA3[4]?.section})</h3>
 
                 </div>
               </div>
@@ -1029,11 +1082,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação B-C-B-C </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.first[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.first[5])[4]?.song}</h3>
+                  <h3> >> {songsB1[0]?.artist} - {songsB1[0]?.song} ({songsB1[0]?.section})</h3>
+                  <h3> >> {songsB1[1]?.artist} - {songsB1[1]?.song} ({songsB1[1]?.section})</h3>
+                  <h3> >> {songsB1[2]?.artist} - {songsB1[2]?.song} ({songsB1[2]?.section})</h3>
+                  <h3> >> {songsB1[3]?.artist} - {songsB1[3]?.song} ({songsB1[3]?.section})</h3>
+                  <h3> >> {songsB1[4]?.artist} - {songsB1[4]?.song} ({songsB1[4]?.section})</h3>
 
                 </div>
               </div>
@@ -1046,11 +1099,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação B-E-Am-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.second[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.second[5])[4]?.song}</h3>
+                  <h3> >> {songsB2[0]?.artist} - {songsB2[0]?.song} ({songsB2[0]?.section})</h3>
+                  <h3> >> {songsB2[1]?.artist} - {songsB2[1]?.song} ({songsB2[1]?.section})</h3>
+                  <h3> >> {songsB2[2]?.artist} - {songsB2[2]?.song} ({songsB2[2]?.section})</h3>
+                  <h3> >> {songsB2[3]?.artist} - {songsB2[3]?.song} ({songsB2[3]?.section})</h3>
+                  <h3> >> {songsB2[4]?.artist} - {songsB2[4]?.song} ({songsB2[4]?.section})</h3>
 
                 </div>
               </div>
@@ -1063,11 +1116,11 @@ function App() {
                   <h2> Essas são as músicas com a combinação B-Em-C-G </h2>
                   <h4> Caso demore para aparecer os resultados, aguarde mais alguns segundos </h4>
                 
-                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[0]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[0]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[1]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[1]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[2]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[2]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[3]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[3]?.song}</h3>
-                  <h3> {GetInfo("songs?cp=" + dictB.third[5])[4]?.artist} - {GetInfo("songs?cp=" + dictB.third[5])[4]?.song}</h3>
+                  <h3> >> {songsB3[0]?.artist} - {songsB3[0]?.song} ({songsB3[0]?.section})</h3>
+                  <h3> >> {songsB3[1]?.artist} - {songsB3[1]?.song} ({songsB3[1]?.section})</h3>
+                  <h3> >> {songsB3[2]?.artist} - {songsB3[2]?.song} ({songsB3[2]?.section})</h3>
+                  <h3> >> {songsB3[3]?.artist} - {songsB3[3]?.song} ({songsB3[3]?.section})</h3>
+                  <h3> >> {songsB3[4]?.artist} - {songsB3[4]?.song} ({songsB3[4]?.section})</h3>
 
                 </div>
               </div>
