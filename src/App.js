@@ -84,54 +84,54 @@ function App() {
     //     loadData();
     //   }, []);
 
-    
+    sufixSong = "songs?cp=";
 
     // Fazendo a chamada para as músicas
-    var songsC1 = GetInfo("songs?cp=" + dictC.first[5]);
-    var songsC2 = GetInfo("songs?cp=" + dictC.second[5]);
-    var songsC3 = GetInfo("songs?cp=" + dictC.third[5]);
+    var songsC1 = GetInfo(sufixSong + dictC.first[5]);
+    var songsC2 = GetInfo(sufixSong + dictC.second[5]);
+    var songsC3 = GetInfo(sufixSong + dictC.third[5]);
 
-    var songsD1 = GetInfo("songs?cp=" + dictD.first[5]);
-    var songsD2 = GetInfo("songs?cp=" + dictD.second[5]);
-    var songsD3 = GetInfo("songs?cp=" + dictD.third[5]);
+    var songsD1 = GetInfo(sufixSong + dictD.first[5]);
+    var songsD2 = GetInfo(sufixSong + dictD.second[5]);
+    var songsD3 = GetInfo(sufixSong + dictD.third[5]);
 
-    var songsE1 = GetInfo("songs?cp=" + dictE.first[5]);
-    var songsE2 = GetInfo("songs?cp=" + dictE.second[5]);
-    var songsE3 = GetInfo("songs?cp=" + dictE.third[5]);
+    var songsE1 = GetInfo(sufixSong + dictE.first[5]);
+    var songsE2 = GetInfo(sufixSong + dictE.second[5]);
+    var songsE3 = GetInfo(sufixSong + dictE.third[5]);
 
-    var songsF1 = GetInfo("songs?cp=" + dictF.first[5]);
-    var songsF2 = GetInfo("songs?cp=" + dictF.second[5]);
-    var songsF3 = GetInfo("songs?cp=" + dictF.third[5]);
+    var songsF1 = GetInfo(sufixSong + dictF.first[5]);
+    var songsF2 = GetInfo(sufixSong + dictF.second[5]);
+    var songsF3 = GetInfo(sufixSong + dictF.third[5]);
 
-    var songsG1 = GetInfo("songs?cp=" + dictG.first[5]);
-    var songsG2 = GetInfo("songs?cp=" + dictG.second[5]);
-    var songsG3 = GetInfo("songs?cp=" + dictG.third[5]);
+    var songsG1 = GetInfo(sufixSong + dictG.first[5]);
+    var songsG2 = GetInfo(sufixSong + dictG.second[5]);
+    var songsG3 = GetInfo(sufixSong + dictG.third[5]);
 
-    var songsA1 = GetInfo("songs?cp=" + dictA.first[5]);
-    var songsA2 = GetInfo("songs?cp=" + dictA.second[5]);
-    var songsA3 = GetInfo("songs?cp=" + dictA.third[5]);
+    var songsA1 = GetInfo(sufixSong + dictA.first[5]);
+    var songsA2 = GetInfo(sufixSong + dictA.second[5]);
+    var songsA3 = GetInfo(sufixSong + dictA.third[5]);
 
-    var songsB1 = GetInfo("songs?cp=" + dictB.first[5]);
-    var songsB2 = GetInfo("songs?cp=" + dictB.second[5]);
-    var songsB3 = GetInfo("songs?cp=" + dictB.third[5]);
+    var songsB1 = GetInfo(sufixSong + dictB.first[5]);
+    var songsB2 = GetInfo(sufixSong + dictB.second[5]);
+    var songsB3 = GetInfo(sufixSong + dictB.third[5]);
 
-      
-    sufixSong = "songs?cp=";
-    sufixSong = sufixSong + dictC.first[5];
-    songs = GetInfo(sufixSong);
-    console.log(songs[0]?.artist);
-    console.log(songsC1[0]?.song);
+
+    // sufixSong = sufixSong + dictC.first[5];
+    // songs = GetInfo(sufixSong);
+    // console.log(songs[0]?.artist);
+    // console.log(songsC1[0]?.song);
     
     
-    sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
-    nums = "1";
-    sufix = sufix + nums;
-    chords = GetInfo(sufix);
-    finalProb = chords[0]?.probability;
-    console.log(finalProb);
-    console.log(chords);
+    // sufix = "nodes?cp="; // The following request shows the chords that are most likely to come after the fist chosen chord
+    // nums = "1";
+    // sufix = sufix + nums;
+    // chords = GetInfo(sufix);
+    // finalProb = chords[0]?.probability;
+    // console.log(finalProb);
+    // console.log(chords);
 
 
+    // Definindo os botões
     const ChordsButton = styled(Button) (({ theme }) => ({
       color: theme.palette.getContrastText("#6096BA"),
       backgroundColor: "#274C77",
@@ -344,17 +344,21 @@ function App() {
               <h2>Aqui está as suas combinações favoritas!</h2>
 
               <div className="chordsButton3">
-                  {/* <div className="groupByProbability">
-                  {
+                  <div className="groupByProbability">
+                  {/* {
                     favs.map(
                       (combination) => (
                         <div>
                           <ChordsButton key={`combinações__${combination.id}`} src={combination.chords} id={combination.id} combination_title={params.combination_title}></ChordsButton> 
-                          <UnfavoriteButton onClick={() => { alert('Desfavoritado') }} variant="contained" fontSize="small">❤</UnfavoriteButton> 
                         </div>
                       ))
-                  }
-                  </div> */}
+                  } */}
+                    <ChordsButton variant="contained">{dictC.second[0]}</ChordsButton> 
+                    <ChordsButton variant="contained">{dictC.second[1]}</ChordsButton>
+                    <ChordsButton variant="contained">{dictC.second[2]}</ChordsButton>
+                    <ChordsButton variant="contained">{dictC.second[3]}</ChordsButton>
+                    <UnfavoriteButton onClick={() => { alert('Desfavoritado') }} variant="contained" fontSize="small">❤</UnfavoriteButton> 
+                  </div>
               </div>
             </div> 
             <Link to="/Main" style={{ textDecoration: 'none' }}> <MainButton fontSize="small" variant="contained">Home</MainButton> </Link>
